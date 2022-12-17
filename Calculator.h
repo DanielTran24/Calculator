@@ -413,7 +413,6 @@ namespace Calculator {
 			this->Controls->Add(this->display);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
-			this->Click += gcnew System::EventHandler(this, &MyForm::EnterNum);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
