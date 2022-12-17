@@ -34,7 +34,9 @@ namespace Calculator {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::TextBox^ textBox1;
+	private: System::Windows::Forms::TextBox^ display;
+	protected:
+
 
 	private: System::Windows::Forms::Button^ subtract;
 	private: System::Windows::Forms::Button^ divide;
@@ -53,6 +55,10 @@ namespace Calculator {
 	private: System::Windows::Forms::Button^ decimal;
 	private: System::Windows::Forms::Button^ clear;
 	private: System::Windows::Forms::Button^ addition;
+	private: System::Windows::Forms::Button^ backspace;
+	private: System::Windows::Forms::Button^ plusminus;
+
+
 
 
 
@@ -77,7 +83,7 @@ namespace Calculator {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
+			this->display = (gcnew System::Windows::Forms::TextBox());
 			this->subtract = (gcnew System::Windows::Forms::Button());
 			this->divide = (gcnew System::Windows::Forms::Button());
 			this->multiply = (gcnew System::Windows::Forms::Button());
@@ -95,19 +101,22 @@ namespace Calculator {
 			this->decimal = (gcnew System::Windows::Forms::Button());
 			this->clear = (gcnew System::Windows::Forms::Button());
 			this->addition = (gcnew System::Windows::Forms::Button());
+			this->backspace = (gcnew System::Windows::Forms::Button());
+			this->plusminus = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
-			// textBox1
+			// display
 			// 
-			this->textBox1->Font = (gcnew System::Drawing::Font(L"Arial", 28.125F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->display->Font = (gcnew System::Drawing::Font(L"Arial", 28.125F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->textBox1->ImeMode = System::Windows::Forms::ImeMode::On;
-			this->textBox1->Location = System::Drawing::Point(89, 30);
-			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(963, 94);
-			this->textBox1->TabIndex = 0;
-			this->textBox1->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
-			this->textBox1->TextChanged += gcnew System::EventHandler(this, &MyForm::textBox1_TextChanged);
+			this->display->ImeMode = System::Windows::Forms::ImeMode::On;
+			this->display->Location = System::Drawing::Point(28, 29);
+			this->display->Name = L"display";
+			this->display->Size = System::Drawing::Size(606, 94);
+			this->display->TabIndex = 0;
+			this->display->Text = L"0";
+			this->display->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			this->display->TextChanged += gcnew System::EventHandler(this, &MyForm::display_TextChanged);
 			// 
 			// subtract
 			// 
@@ -115,13 +124,13 @@ namespace Calculator {
 			this->subtract->Font = (gcnew System::Drawing::Font(L"Arial", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->subtract->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->subtract->Location = System::Drawing::Point(922, 444);
+			this->subtract->Location = System::Drawing::Point(504, 444);
 			this->subtract->Name = L"subtract";
 			this->subtract->Size = System::Drawing::Size(130, 130);
 			this->subtract->TabIndex = 2;
 			this->subtract->Text = L"−";
 			this->subtract->UseVisualStyleBackColor = false;
-			this->subtract->Click += gcnew System::EventHandler(this, &MyForm::subtract_Click);
+			this->subtract->Click += gcnew System::EventHandler(this, &MyForm::EnterOperator);
 			// 
 			// divide
 			// 
@@ -129,13 +138,13 @@ namespace Calculator {
 			this->divide->Font = (gcnew System::Drawing::Font(L"Arial", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->divide->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->divide->Location = System::Drawing::Point(922, 145);
+			this->divide->Location = System::Drawing::Point(504, 145);
 			this->divide->Name = L"divide";
 			this->divide->Size = System::Drawing::Size(130, 130);
 			this->divide->TabIndex = 3;
 			this->divide->Text = L"÷";
 			this->divide->UseVisualStyleBackColor = false;
-			this->divide->Click += gcnew System::EventHandler(this, &MyForm::divide_Click);
+			this->divide->Click += gcnew System::EventHandler(this, &MyForm::EnterOperator);
 			// 
 			// multiply
 			// 
@@ -143,26 +152,27 @@ namespace Calculator {
 			this->multiply->Font = (gcnew System::Drawing::Font(L"Arial", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->multiply->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->multiply->Location = System::Drawing::Point(922, 293);
+			this->multiply->Location = System::Drawing::Point(504, 293);
 			this->multiply->Name = L"multiply";
 			this->multiply->Size = System::Drawing::Size(130, 130);
 			this->multiply->TabIndex = 4;
 			this->multiply->Text = L"×";
 			this->multiply->UseVisualStyleBackColor = false;
-			this->multiply->Click += gcnew System::EventHandler(this, &MyForm::multiply_Click);
+			this->multiply->Click += gcnew System::EventHandler(this, &MyForm::EnterOperator);
 			// 
 			// equal
 			// 
-			this->equal->BackColor = System::Drawing::SystemColors::ControlDarkDark;
+			this->equal->BackColor = System::Drawing::Color::DeepSkyBlue;
 			this->equal->Font = (gcnew System::Drawing::Font(L"Arial", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->equal->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->equal->Location = System::Drawing::Point(922, 746);
+			this->equal->Location = System::Drawing::Point(504, 746);
 			this->equal->Name = L"equal";
 			this->equal->Size = System::Drawing::Size(130, 130);
 			this->equal->TabIndex = 5;
 			this->equal->Text = L"=";
 			this->equal->UseVisualStyleBackColor = false;
+			this->equal->Click += gcnew System::EventHandler(this, &MyForm::equal_Click);
 			// 
 			// zero
 			// 
@@ -170,13 +180,13 @@ namespace Calculator {
 			this->zero->Font = (gcnew System::Drawing::Font(L"Arial", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->zero->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->zero->Location = System::Drawing::Point(89, 746);
+			this->zero->Location = System::Drawing::Point(28, 746);
 			this->zero->Name = L"zero";
-			this->zero->Size = System::Drawing::Size(130, 130);
+			this->zero->Size = System::Drawing::Size(288, 130);
 			this->zero->TabIndex = 6;
 			this->zero->Text = L"0";
 			this->zero->UseVisualStyleBackColor = false;
-			this->zero->Click += gcnew System::EventHandler(this, &MyForm::zero_Click);
+			this->zero->Click += gcnew System::EventHandler(this, &MyForm::EnterNum);
 			// 
 			// one
 			// 
@@ -184,13 +194,13 @@ namespace Calculator {
 			this->one->Font = (gcnew System::Drawing::Font(L"Arial", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->one->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->one->Location = System::Drawing::Point(89, 594);
+			this->one->Location = System::Drawing::Point(28, 594);
 			this->one->Name = L"one";
 			this->one->Size = System::Drawing::Size(130, 130);
 			this->one->TabIndex = 7;
 			this->one->Text = L"1";
 			this->one->UseVisualStyleBackColor = false;
-			this->one->Click += gcnew System::EventHandler(this, &MyForm::one_Click);
+			this->one->Click += gcnew System::EventHandler(this, &MyForm::EnterNum);
 			// 
 			// two
 			// 
@@ -198,13 +208,13 @@ namespace Calculator {
 			this->two->Font = (gcnew System::Drawing::Font(L"Arial", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->two->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->two->Location = System::Drawing::Point(257, 594);
+			this->two->Location = System::Drawing::Point(186, 594);
 			this->two->Name = L"two";
 			this->two->Size = System::Drawing::Size(130, 130);
 			this->two->TabIndex = 8;
 			this->two->Text = L"2";
 			this->two->UseVisualStyleBackColor = false;
-			this->two->Click += gcnew System::EventHandler(this, &MyForm::two_Click);
+			this->two->Click += gcnew System::EventHandler(this, &MyForm::EnterNum);
 			// 
 			// three
 			// 
@@ -212,13 +222,13 @@ namespace Calculator {
 			this->three->Font = (gcnew System::Drawing::Font(L"Arial", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->three->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->three->Location = System::Drawing::Point(421, 594);
+			this->three->Location = System::Drawing::Point(345, 594);
 			this->three->Name = L"three";
 			this->three->Size = System::Drawing::Size(130, 130);
 			this->three->TabIndex = 9;
 			this->three->Text = L"3";
 			this->three->UseVisualStyleBackColor = false;
-			this->three->Click += gcnew System::EventHandler(this, &MyForm::three_Click);
+			this->three->Click += gcnew System::EventHandler(this, &MyForm::EnterNum);
 			// 
 			// four
 			// 
@@ -226,13 +236,13 @@ namespace Calculator {
 			this->four->Font = (gcnew System::Drawing::Font(L"Arial", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->four->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->four->Location = System::Drawing::Point(89, 444);
+			this->four->Location = System::Drawing::Point(28, 444);
 			this->four->Name = L"four";
 			this->four->Size = System::Drawing::Size(130, 130);
 			this->four->TabIndex = 10;
 			this->four->Text = L"4";
 			this->four->UseVisualStyleBackColor = false;
-			this->four->Click += gcnew System::EventHandler(this, &MyForm::four_Click);
+			this->four->Click += gcnew System::EventHandler(this, &MyForm::EnterNum);
 			// 
 			// five
 			// 
@@ -240,13 +250,13 @@ namespace Calculator {
 			this->five->Font = (gcnew System::Drawing::Font(L"Arial", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->five->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->five->Location = System::Drawing::Point(257, 444);
+			this->five->Location = System::Drawing::Point(186, 444);
 			this->five->Name = L"five";
 			this->five->Size = System::Drawing::Size(130, 130);
 			this->five->TabIndex = 11;
 			this->five->Text = L"5";
 			this->five->UseVisualStyleBackColor = false;
-			this->five->Click += gcnew System::EventHandler(this, &MyForm::five_Click);
+			this->five->Click += gcnew System::EventHandler(this, &MyForm::EnterNum);
 			// 
 			// six
 			// 
@@ -254,13 +264,13 @@ namespace Calculator {
 			this->six->Font = (gcnew System::Drawing::Font(L"Arial", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->six->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->six->Location = System::Drawing::Point(421, 444);
+			this->six->Location = System::Drawing::Point(345, 444);
 			this->six->Name = L"six";
 			this->six->Size = System::Drawing::Size(130, 130);
 			this->six->TabIndex = 12;
 			this->six->Text = L"6";
 			this->six->UseVisualStyleBackColor = false;
-			this->six->Click += gcnew System::EventHandler(this, &MyForm::six_Click);
+			this->six->Click += gcnew System::EventHandler(this, &MyForm::EnterNum);
 			// 
 			// seven
 			// 
@@ -268,13 +278,13 @@ namespace Calculator {
 			this->seven->Font = (gcnew System::Drawing::Font(L"Arial", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->seven->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->seven->Location = System::Drawing::Point(89, 293);
+			this->seven->Location = System::Drawing::Point(28, 293);
 			this->seven->Name = L"seven";
 			this->seven->Size = System::Drawing::Size(130, 130);
 			this->seven->TabIndex = 13;
 			this->seven->Text = L"7";
 			this->seven->UseVisualStyleBackColor = false;
-			this->seven->Click += gcnew System::EventHandler(this, &MyForm::seven_Click);
+			this->seven->Click += gcnew System::EventHandler(this, &MyForm::EnterNum);
 			// 
 			// eight
 			// 
@@ -282,13 +292,13 @@ namespace Calculator {
 			this->eight->Font = (gcnew System::Drawing::Font(L"Arial", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->eight->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->eight->Location = System::Drawing::Point(257, 293);
+			this->eight->Location = System::Drawing::Point(186, 293);
 			this->eight->Name = L"eight";
 			this->eight->Size = System::Drawing::Size(130, 130);
 			this->eight->TabIndex = 14;
 			this->eight->Text = L"8";
 			this->eight->UseVisualStyleBackColor = false;
-			this->eight->Click += gcnew System::EventHandler(this, &MyForm::eight_Click);
+			this->eight->Click += gcnew System::EventHandler(this, &MyForm::EnterNum);
 			// 
 			// nine
 			// 
@@ -296,13 +306,13 @@ namespace Calculator {
 			this->nine->Font = (gcnew System::Drawing::Font(L"Arial", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->nine->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->nine->Location = System::Drawing::Point(421, 293);
+			this->nine->Location = System::Drawing::Point(345, 293);
 			this->nine->Name = L"nine";
 			this->nine->Size = System::Drawing::Size(130, 130);
 			this->nine->TabIndex = 15;
 			this->nine->Text = L"9";
 			this->nine->UseVisualStyleBackColor = false;
-			this->nine->Click += gcnew System::EventHandler(this, &MyForm::nine_Click);
+			this->nine->Click += gcnew System::EventHandler(this, &MyForm::EnterNum);
 			// 
 			// decimal
 			// 
@@ -310,7 +320,7 @@ namespace Calculator {
 			this->decimal->Font = (gcnew System::Drawing::Font(L"Arial", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->decimal->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->decimal->Location = System::Drawing::Point(257, 746);
+			this->decimal->Location = System::Drawing::Point(345, 746);
 			this->decimal->Name = L"decimal";
 			this->decimal->Size = System::Drawing::Size(130, 130);
 			this->decimal->TabIndex = 16;
@@ -324,7 +334,7 @@ namespace Calculator {
 			this->clear->Font = (gcnew System::Drawing::Font(L"Arial", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->clear->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->clear->Location = System::Drawing::Point(761, 145);
+			this->clear->Location = System::Drawing::Point(28, 145);
 			this->clear->Name = L"clear";
 			this->clear->Size = System::Drawing::Size(130, 130);
 			this->clear->TabIndex = 17;
@@ -338,13 +348,41 @@ namespace Calculator {
 			this->addition->Font = (gcnew System::Drawing::Font(L"Arial", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->addition->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			this->addition->Location = System::Drawing::Point(922, 594);
+			this->addition->Location = System::Drawing::Point(504, 594);
 			this->addition->Name = L"addition";
 			this->addition->Size = System::Drawing::Size(130, 130);
 			this->addition->TabIndex = 18;
 			this->addition->Text = L"+";
 			this->addition->UseVisualStyleBackColor = false;
-			this->addition->Click += gcnew System::EventHandler(this, &MyForm::addition_Click);
+			this->addition->Click += gcnew System::EventHandler(this, &MyForm::EnterOperator);
+			// 
+			// backspace
+			// 
+			this->backspace->BackColor = System::Drawing::Color::DeepSkyBlue;
+			this->backspace->Font = (gcnew System::Drawing::Font(L"Arial", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->backspace->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+			this->backspace->Location = System::Drawing::Point(345, 145);
+			this->backspace->Name = L"backspace";
+			this->backspace->Size = System::Drawing::Size(130, 130);
+			this->backspace->TabIndex = 19;
+			this->backspace->Text = L"⌫";
+			this->backspace->UseVisualStyleBackColor = false;
+			this->backspace->Click += gcnew System::EventHandler(this, &MyForm::backspace_Click);
+			// 
+			// plusminus
+			// 
+			this->plusminus->BackColor = System::Drawing::Color::DeepSkyBlue;
+			this->plusminus->Font = (gcnew System::Drawing::Font(L"Arial", 24, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->plusminus->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
+			this->plusminus->Location = System::Drawing::Point(186, 145);
+			this->plusminus->Name = L"plusminus";
+			this->plusminus->Size = System::Drawing::Size(130, 130);
+			this->plusminus->TabIndex = 20;
+			this->plusminus->Text = L"±";
+			this->plusminus->UseVisualStyleBackColor = false;
+			this->plusminus->Click += gcnew System::EventHandler(this, &MyForm::plusminus_Click);
 			// 
 			// MyForm
 			// 
@@ -352,7 +390,9 @@ namespace Calculator {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(24)), static_cast<System::Int32>(static_cast<System::Byte>(24)),
 				static_cast<System::Int32>(static_cast<System::Byte>(24)));
-			this->ClientSize = System::Drawing::Size(1098, 907);
+			this->ClientSize = System::Drawing::Size(666, 907);
+			this->Controls->Add(this->plusminus);
+			this->Controls->Add(this->backspace);
 			this->Controls->Add(this->addition);
 			this->Controls->Add(this->clear);
 			this->Controls->Add(this->decimal);
@@ -370,66 +410,82 @@ namespace Calculator {
 			this->Controls->Add(this->multiply);
 			this->Controls->Add(this->divide);
 			this->Controls->Add(this->subtract);
-			this->Controls->Add(this->textBox1);
+			this->Controls->Add(this->display);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
+			this->Click += gcnew System::EventHandler(this, &MyForm::EnterNum);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
 	//
+	//Stored number variables
+	//
+
+	double first_num, second_num, result;
+	String^ operators;
+
+	//
 	//Button click functions
 	//
-	private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	}
-	private: System::Void subtract_Click(System::Object^ sender, System::EventArgs^ e) {
-		textBox1->Text += L'−';
-	}
-	private: System::Void addition_Click(System::Object^ sender, System::EventArgs^ e) {
-		textBox1->Text += L'+';
-	}
-	private: System::Void multiply_Click(System::Object^ sender, System::EventArgs^ e) {
-		textBox1->Text += L'×';
-	}
-	private: System::Void divide_Click(System::Object^ sender, System::EventArgs^ e) {
-		textBox1->Text += L'÷';
+
+	private: System::Void display_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 	}
 	private: System::Void decimal_Click(System::Object^ sender, System::EventArgs^ e) {
-		textBox1->Text += L'.';
-	}
-	private: System::Void zero_Click(System::Object^ sender, System::EventArgs^ e) {
-		textBox1->Text += L'0';
-	}
-	private: System::Void one_Click(System::Object^ sender, System::EventArgs^ e) {
-		textBox1->Text += L'1';
-	}
-	private: System::Void two_Click(System::Object^ sender, System::EventArgs^ e) {
-		textBox1->Text += L'2';
-	}
-	private: System::Void three_Click(System::Object^ sender, System::EventArgs^ e) {
-		textBox1->Text += L'3';
-	}
-	private: System::Void four_Click(System::Object^ sender, System::EventArgs^ e) {
-		textBox1->Text += L'4';
-	}
-	private: System::Void five_Click(System::Object^ sender, System::EventArgs^ e) {
-		textBox1->Text += L'5';
-	}
-	private: System::Void six_Click(System::Object^ sender, System::EventArgs^ e) {
-		textBox1->Text += L'6';
-	}
-	private: System::Void seven_Click(System::Object^ sender, System::EventArgs^ e) {
-		textBox1->Text += L'7';
-	}
-	private: System::Void eight_Click(System::Object^ sender, System::EventArgs^ e) {
-		textBox1->Text += L'8';
-	}
-	private: System::Void nine_Click(System::Object^ sender, System::EventArgs^ e) {
-		textBox1->Text += L'9';
+		if (!display->Text->Contains (".")) {
+			display->Text = display->Text + ".";
+		}
 	}
 	private: System::Void clear_Click(System::Object^ sender, System::EventArgs^ e) {
-		textBox1->Clear();
+		display->Text = "0";
+	}
+	private: System::Void EnterNum(System::Object^ sender, System::EventArgs^ e) {
+		Button^ Numbers = safe_cast<Button^>(sender);
+		if (display->Text == "0") {
+			display->Text = Numbers->Text;
+		}
+		else {
+			display->Text = display->Text + Numbers->Text;
+		}
+	}
+	private: System::Void EnterOperator(System::Object^ sender, System::EventArgs^ e) {
+		Button^ Operator = safe_cast<Button^>(sender);
+		first_num = Double::Parse(display->Text);
+		display->Text = "0";
+		operators = Operator->Text;
+	}
+	private: System::Void equal_Click(System::Object^ sender, System::EventArgs^ e) {
+		second_num = Double::Parse(display->Text);
+		if (operators == "+") {
+			result = first_num + second_num;
+			display->Text = System::Convert::ToString(result);
+		}
+		else if (operators == "−") {
+			result = first_num - second_num;
+			display->Text = System::Convert::ToString(result);
+		}
+		else if (operators == "×") {
+			result = first_num * second_num;
+			display->Text = System::Convert::ToString(result);
+		}
+		else if (operators == "÷") {
+			result = first_num / second_num;
+			display->Text = System::Convert::ToString(result);
+		}
+	}
+	private: System::Void backspace_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (display->Text->Length > 0) {
+			display->Text = display->Text->Remove(display->Text->Length - 1, 1);
+		}
+	}
+	private: System::Void plusminus_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (display->Text->Contains("-")) {
+			display->Text = display->Text->Remove(0, 1);
+		}
+		else {
+			display->Text = "-" + display->Text;
+		}
 	}
 };
 }
