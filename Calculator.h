@@ -425,13 +425,18 @@ namespace Calculator {
 
 	double first_num, second_num, result;
 	String^ operators;
+	
+	//
+	//Textbox Display Function
+	//
+
+	private: System::Void display_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
 
 	//
 	//Button click functions
 	//
 
-	private: System::Void display_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	}
 	private: System::Void decimal_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (!display->Text->Contains (".")) {
 			display->Text = display->Text + ".";
